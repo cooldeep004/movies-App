@@ -11,3 +11,19 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+.movie-card
+{
+  display: flex;
+  flex-direction: row;
+}
+.left img
+{
+  height: 200px;
+  width: 150px;
+  margin: 10px;
+}
+.favourite-btn
+{
+display: flex;
+justify-content: end;
+}
