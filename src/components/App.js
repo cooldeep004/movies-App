@@ -2,9 +2,15 @@ import react from 'react';
 import {data} from '../data';
 import Navbar from './Navbar';
 import MovieCard from './MovieCard'
-import { addMovies , addFavourite } from '../actions';
+import { addMovies , addFavourite , showFavourite} from '../actions';
 class App extends react.Component {
-
+constructor(props)
+{
+  super(props)
+  this.state={
+  flag:true
+  }
+}
 componentDidMount(){
 const {store} = this.props;
 store.subscribe(() =>{
@@ -13,25 +19,46 @@ this.forceUpdate();
   store.dispatch(addMovies(data));
   console.log('STATE', this.props.store.getState());
 }
+isFavourite=(movie)=>{
+  const {favourites} = this.props.store.getState();
+const index= favourites.indexOf(movie);
+if(index!=-1)
+return true;
+else
+return false;
+}
+clicked=(val)=>
+{
+  this.props.store.dispatch(showFavourite(val));
+}
 
   render(){
-  const {list} = this.props.store.getState();
+  var {list , showFavourites} = this.props.store.getState();
+  
+  const {favourites} = this.props.store.getState();
   console.log(this.props.store.getState());
+
+  const displayMovie =showFavourites? favourites : list;
   return (
     <div className="App">
       <Navbar />
 <div className="main">
 <div className="tabs">
-  <div className="tab">Movies</div>
-  <div className="tab">favourites</div>
+
+  <button className="tab" onClick={()=>this.clicked(false)}>Movies</button>
+  <button className="tab" onClick={()=>this.clicked(true)}>favourites</button>
 </div>
 <div className="list">
   {
-    list.map((movie ,index) =>(
-      <MovieCard movie={movie} key={`movies-${index}`} dispatch={this.props.store.dispatch}/>
+
+    displayMovie.map((movie ,index) =>(
+      <MovieCard movie={movie} key={`movies-${index}`} dispatch={this.props.store.dispatch}
+      isFavourite={this.isFavourite(movie)}
+      />
     ))
   }
 </div>
+{displayMovie.length ===0 ?<div> "no movies" </div> : null}
 </div>
     </div>
   );
