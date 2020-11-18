@@ -20,7 +20,8 @@ this.forceUpdate();
   console.log('STATE', this.props.store.getState());
 }
 isFavourite=(movie)=>{
-  const {favourites} = this.props.store.getState();
+  const {movies}=this.props.store.getState();
+  const {favourites} = movies;
 const index= favourites.indexOf(movie);
 if(index!=-1)
 return true;
@@ -33,15 +34,15 @@ clicked=(val)=>
 }
 
   render(){
-  var {list , showFavourites} = this.props.store.getState();
+  const {movies , search } = this.props.store.getState();
   
-  const {favourites} = this.props.store.getState();
+  const {favourites,list , showFavourites} = movies;
   console.log(this.props.store.getState());
 
   const displayMovie =showFavourites? favourites : list;
   return (
     <div className="App">
-      <Navbar />
+      <Navbar dispatch={this.props.store.dispatch}  search={search} />
 <div className="main">
 <div className="tabs">
 

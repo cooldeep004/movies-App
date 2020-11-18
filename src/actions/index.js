@@ -35,3 +35,31 @@ export function showFavourite(val){
         val
     }
 }
+
+export const ADD_MOVIE_TO_LIST='ADD_MOVIE_TO_LIST';
+export function addMoviesToList(movie){
+    return {
+        type:ADD_MOVIE_TO_LIST,
+        movie
+    };
+}
+export function handleMovieSearch(movie){
+    const url=`http://www.omdbapi.com/?apikey=3ca5df7&t=${movie}`;
+
+    return function(dispatch)
+    {
+        fetch(url) 
+    .then(Response =>Response.json())
+    .then (movie =>{
+        console.log('movie', movie);
+        dispatch(addMovieSearchResult(movie))
+    })
+    }
+}
+export const ADD_SEARCH_RESULT='ADD_SEARCH_RESULT';
+export function addMovieSearchResult(movie){
+    return{
+        type:ADD_SEARCH_RESULT,
+        movie
+    };
+}

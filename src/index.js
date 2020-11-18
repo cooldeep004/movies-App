@@ -1,10 +1,42 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {createStore} from 'redux'
+import {createStore , applyMiddleware} from 'redux'
 import './index.css';
 import App from './components/App'
-import movies from './reducers'
-const store= createStore(movies);
+import rootreducer from './reducers'
+import thunk from 'redux-thunk'
+/*const logger =function({dispatch,getState})
+{
+  return function(next)
+  {
+    return function(action)
+    {
+      console.log('ACTION_TYPE=', action.type);
+      next(action);
+    }
+  }
+}*/
+
+const logger =({dispatch,getState})=> (next) => (action)=>{
+  if(typeof action !=='function')
+  console.log('ACTION_TYPE=', action.type);
+  
+  next(action);
+}
+/*
+npm i redux-thunk
+const thunk =({dispatch,getState})=> (next) => (action)=>{
+  //console.log('ACTION_TYPE=', action.type);
+  if(typeof action === 'function')
+  {
+    action(dispatch)
+    return;
+  }
+  next(action);
+}
+
+*/
+const store= createStore(rootreducer,applyMiddleware(logger , thunk));
 console.log('store', store);
 console.log('BEFORE STATE', store.getState());
 /*
